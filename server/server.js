@@ -25,6 +25,8 @@ var connection = mysql.createConnection({
 
 connection.connect();
 
+app.use(express.static(path.join(__dirname, 'dist')));
+
 const secretKey = 'abcdefghijklmnop';
 const jwtMW = expressJWT({
     secret: secretKey,
@@ -32,7 +34,7 @@ const jwtMW = expressJWT({
 });
 
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
+    res.setHeader('Access-Control-Allow-Origin', 'http://161.35.59.8');
     res.setHeader('Access-Control-Allow-Headers', 'Content-type,Authorization');
     next();
 });
@@ -56,8 +58,8 @@ app.post('/api/login', async (req, res) => {
                         decoded_token
                     });
                     return;
-                  }  
-              } 
+                  }
+              }
                 res.status(401).json({
                   success: false,
                   token: null,
@@ -71,22 +73,22 @@ app.post('/api/login', async (req, res) => {
 app.post('/api/signup', async (req, res, next) => {
     const { username, password } = req.body;
     connection.query("SELECT username FROM login", function (error, results, fields) {
-        for (let user of results) {      
+        for (let user of results) {
             if(username == user.username) {
                 res.status(401).json({
                 success: false,
-                err: 'Username already taken. Please try again!'   
+                err: 'Username already taken. Please try again!'
               });
 
               return;
-            } 
+            }
 
           }
 
           if(error || username == "" || password == "")  {
             res.status(401).json({
                 success: false,
-                err: 'Please check your credentials!'   
+                err: 'Please check your credentials!'
             });
 
             return;
@@ -97,8 +99,8 @@ app.post('/api/signup', async (req, res, next) => {
                   success: true,
                   err: null
                 });
-              });  
-              
+              });
+
     });
 
 });
@@ -149,7 +151,13 @@ app.post("/api/dashboard", (req, res) => {
   });
 
 
-app.listen(port, () => {
+  app.get('/*', function(req, res) {
+    res.sendFile(path.join(__dirname, 'dist', 'index.html'))
+  });
+
+  app.listen(port, () => {
     console.log(`API served at http://localhost:${port}`);
 });
+
+
 
