@@ -26,7 +26,7 @@ var connection = mysql.createConnection({
 
 connection.connect();
 
-app.use(express.static(path.join(__dirname, 'dist')));
+//app.use(express.static(path.join(__dirname, 'dist')));
 
 const secretKey = 'abcdefghijklmnop';
 const jwtMW = expressJWT({
