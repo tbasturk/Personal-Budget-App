@@ -26,7 +26,7 @@ var connection = mysql.createConnection({
 
 connection.connect();
 
-//app.use(express.static(path.join(__dirname, 'dist')));
+app.use(express.static(path.join(__dirname, 'dist')));
 
 const secretKey = 'abcdefghijklmnop';
 const jwtMW = expressJWT({
@@ -151,12 +151,12 @@ app.post("/api/dashboard", (req, res) => {
     }
   });
 
-/*
+
   app.get('/*', function(req, res) {
     console.log("loading....");
     res.sendFile(path.join(__dirname, 'dist', 'index.html'));
   });
-*/
+
 
   app.listen(port, () => {
     console.log(`API served at http://localhost:${port}`);
